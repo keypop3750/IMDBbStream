@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="900">
+  <rect width="100%" height="100%" fill="#111827"/>
+  <rect x="40" y="40" width="520" height="820" rx="24" ry="24" fill="#1f2937" />
+  <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle"
+        font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+        font-size="64" fill="#e5e7eb">SERIES</text>
+  <text x="50%" y="58%" dominant-baseline="middle" text-anchor="middle"
+        font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+        font-size="28" fill="#9ca3af">NO POSTER</text>
+</svg>

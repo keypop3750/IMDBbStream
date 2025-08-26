@@ -1,0 +1,17 @@
+{
+  "name": "imdbstream-cinemeta",
+  "version": "3.10.0",
+  "type": "module",
+  "private": true,
+  "description": "IMDb lists → Stremio catalogs. Per-user. Phase 0–1 baseline.",
+  "scripts": {
+    "start": "node server.js",
+    "smoke": "node scripts/smoke_catalog.js",
+    "check": "node scripts/check_list.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "node-fetch": "^3.3.2"
+  }
+}

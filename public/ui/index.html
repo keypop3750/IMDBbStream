@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IMDBStream • Configuration</title>
+  <style>
+    :root{
+      --bg:#0f1220; --panel:#171a2b; --panel-2:#1e2135; --muted:#a7b1d6; --text:#e7eaff;
+      --accent:#5b5bd6; --accent-2:#7a5bff; --danger:#ff5978; --ok:#6ee7b7;
+      --shadow: 0 8px 24px rgba(0,0,0,.35);
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#0b0e1a);color:var(--text);font:16px/1.45 system-ui,Segoe UI,Roboto,Inter,Arial}
+    .wrap{max-width:980px;margin:48px auto;padding:20px}
+    .card{background:var(--panel);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px}
+    h1{font-weight:800;text-align:center;margin:0 0 18px 0;font-size:40px;letter-spacing:.2px}
+    .subtitle{text-align:center;color:var(--muted);margin-bottom:26px}
+
+    .addbar{display:flex;gap:12px;align-items:center;margin:8px 0 18px}
+    .addbar input{
+      flex:1;background:#0c0f1d;color:var(--text);border:1px solid #2b2f49;
+      border-radius:10px;padding:14px 16px;outline:none
+    }
+    .btn{border:0;border-radius:10px;background:var(--accent);color:#fff;padding:12px 16px;cursor:pointer}
+    .btn.secondary{background:#2b2f49}
+    .btn.ghost{background:transparent;border:1px solid #2b2f49;color:var(--muted)}
+    .btn.danger{background:var(--danger)}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+    @media (max-width:860px){ .grid{grid-template-columns:1fr} }
+
+    .listCard{background:var(--panel-2);border-radius:16px;padding:18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:14px}
+    .listHead{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .listTitle{font-weight:700;font-size:18px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .listSub{color:var(--muted);font-size:12px}
+
+    .toggles{display:flex;gap:28px;align-items:center}
+    .toggle{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:14px}
+    .switch{position:relative;width:44px;height:24px;background:#242842;border-radius:999px;cursor:pointer;transition:.2s all}
+    .switch::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#9aa4d6;transition:.2s all}
+    .switch.on{background:var(--accent)}
+    .switch.on::after{left:23px;background:white}
+
+    .sortRow{display:flex;gap:12px;align-items:center}
+    .select{position:relative}
+    select{appearance:none;-webkit-appearance:none;background:#0c0f1d;border:1px solid #2b2f49;color:var(--text);
+      padding:10px 36px 10px 12px;border-radius:10px}
+    .select:after{content:'▾';position:absolute;right:10px;top:6px;color:#9aa4d6;pointer-events:none}
+    .reverse{padding:10px 12px}
+
+    .placeholder{margin-top:8px;background:#121528;border:1px dashed #2b2f49;border-radius:12px;padding:14px;color:#8c94bf}
+
+    .footer{display:flex;gap:18px;margin-top:26px}
+    .footer .btn{flex:1;font-weight:700;font-size:16px;padding:16px 18px;border-radius:14px}
+    .installWeb{background:#2a2850}
+  
+    .sectionHdr{font-weight:700;color:#c5cbf5;font-size:13px;margin-top:2px}
+    .rows2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .rows2 .toggle{min-width:160px}
+    @media (max-width:560px){ .rows2{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>IMDBStream<br/>Configuration</h1>
+      <div class="subtitle">Paste IMDb list, choose where it appears, pick a default sort, then install.</div>
+
+      <div class="addbar">
+        <input id="add-input" placeholder="Paste an IMDb URL or lsID (e.g. https://www.imdb.com/list/ls123456789/)" />
+        <button id="add-btn" class="btn">Add</button>
+      </div>
+
+      <div id="lists" class="grid" aria-live="polite"></div>
+
+      <h3 style="margin:18px 0 8px">Universal Sorting <small style="font-weight:400;color:var(--muted)">(placeholder)</small></h3>
+      <div class="placeholder">Coming soon: set a universal default sort for all catalogs from this addon.</div>
+
+      <div class="footer">
+        <a id="install-stremio" class="btn" href="#" target="_self" rel="nofollow">Install to Stremio</a>
+        <a id="install-web" class="btn installWeb" href="#" target="_blank" rel="noopener">Install to Web</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="/ui/model2.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+# Node / logs
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-lock.yaml
+package-lock.json
+
+# Runtime data
+cache/
+data/
+tmp/
+logs/
+*.log
+
+# OS/editor junk
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Builds (if any)
+dist/
+build/
+coverage/
