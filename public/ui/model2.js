@@ -22,15 +22,6 @@
     installWeb.href = url;
   })();
 
-  const SORT_OPTIONS = [
-    {key:'name', label:'Title'},
-    {key:'alphabetical', label:'Alphabetical'},
-    {key:'added', label:'Date Added'},
-    {key:'rating', label:'IMDb Score'},
-    {key:'year', label:'Year'},
-    {key:'runtime', label:'Runtime'}
-  ];
-
   function api(path, init){
     return fetch(path, { headers: { 'content-type': 'application/json' }, ...init })
       .then(async r => { const j = await r.json().catch(()=>({})); if (!r.ok) throw Object.assign(new Error('HTTP '+r.status), { response:j }); return j; });
@@ -39,6 +30,12 @@
   async function load(){
     const arr = await api(`/api/user/${encodeURIComponent(uid)}/lists`);
     render(arr || []);
+    
+    // Trigger preloading for faster addon installation
+    if (arr && arr.length > 0) {
+      api(`/api/user/${encodeURIComponent(uid)}/preload`, { method: 'POST' })
+        .catch(e => console.warn('Preload failed:', e));
+    }
   }
 
   function visFromList(list){
@@ -48,14 +45,6 @@
     const sv = (list.visibility && list.visibility.series) || base;
     return { movie: { discover: !!mv.discover, home: !!mv.home },
              series:{ discover: !!sv.discover, home: !!sv.home } };
-  }
-
-  function getLocalSort(lsid){
-    try { return JSON.parse(localStorage.getItem(`imdbstream.sort.${uid}.${lsid}`)) || {key:'name', order:'asc'}; }
-    catch { return {key:'name', order:'asc'}; }
-  }
-  function setLocalSort(lsid, obj){
-    try { localStorage.setItem(`imdbstream.sort.${uid}.${lsid}`, JSON.stringify(obj)); } catch {}
   }
 
   function Switch(on){ const el=document.createElement('span'); el.className='switch'+(on?' on':''); el.setAttribute('role','switch'); el.setAttribute('aria-checked',on?'true':'false'); return el; }
@@ -75,7 +64,6 @@
       const lsid = list.id || list.lsid || String(list);
       const title = list.title || list.name || lsid;
       const vis = visFromList(list);
-      const savedSort = getLocalSort(lsid);
 
       const card = document.createElement('div');
       card.className = 'listCard';
@@ -110,27 +98,6 @@
       rows.appendChild(sRow); rows.appendChild(mRow);
       card.appendChild(rows);
 
-      const sortRow = document.createElement('div');
-      sortRow.className = 'sortRow';
-      const selWrap = document.createElement('div');
-      selWrap.className = 'select';
-      const sel = document.createElement('select');
-      SORT_OPTIONS.forEach(opt => {
-        const o = document.createElement('option');
-        o.value = opt.key;
-        o.textContent = `Sort by: ${opt.label}`;
-        if (savedSort.key === opt.key || (savedSort.key==='name' && opt.key==='alphabetical')) o.selected = true;
-        sel.appendChild(o);
-      });
-      selWrap.appendChild(sel);
-      const reverse = document.createElement('button');
-      reverse.className = 'btn reverse';
-      reverse.textContent = 'Reverse';
-      if (savedSort.order === 'desc') reverse.classList.add('secondary');
-      sortRow.appendChild(selWrap);
-      sortRow.appendChild(reverse);
-      card.appendChild(sortRow);
-
       function sendVisibility(){
         const payload = { visibility: {
           movie:  { home: mHome.classList.contains('on'),  discover: mDisc.classList.contains('on') },
@@ -147,16 +114,6 @@
           sw.setAttribute('aria-checked', sw.classList.contains('on') ? 'true' : 'false');
           sendVisibility();
         });
-      });
-
-      sel.addEventListener('change', () => {
-        const key = sel.value === 'alphabetical' ? 'name' : sel.value;
-        setLocalSort(lsid, { key, order: getLocalSort(lsid).order });
-      });
-      reverse.addEventListener('click', () => {
-        const next = (getLocalSort(lsid).order === 'asc') ? 'desc' : 'asc';
-        setLocalSort(lsid, { key: getLocalSort(lsid).key, order: next });
-        reverse.classList.toggle('secondary');
       });
 
       head.querySelector('.btn-del').addEventListener('click', async () => {

@@ -44,13 +44,6 @@
     .switch.on{background:var(--accent)}
     .switch.on::after{left:23px;background:white}
 
-    .sortRow{display:flex;gap:12px;align-items:center}
-    .select{position:relative}
-    select{appearance:none;-webkit-appearance:none;background:#0c0f1d;border:1px solid #2b2f49;color:var(--text);
-      padding:10px 36px 10px 12px;border-radius:10px}
-    .select:after{content:'▾';position:absolute;right:10px;top:6px;color:#9aa4d6;pointer-events:none}
-    .reverse{padding:10px 12px}
-
     .placeholder{margin-top:8px;background:#121528;border:1px dashed #2b2f49;border-radius:12px;padding:14px;color:#8c94bf}
 
     .footer{display:flex;gap:18px;margin-top:26px}
@@ -67,7 +60,7 @@
   <div class="wrap">
     <div class="card">
       <h1>IMDBStream<br/>Configuration</h1>
-      <div class="subtitle">Paste IMDb list, choose where it appears, pick a default sort, then install.</div>
+      <div class="subtitle">Paste IMDb list, choose where it appears, then install.</div>
 
       <div class="addbar">
         <input id="add-input" placeholder="Paste an IMDb URL or lsID (e.g. https://www.imdb.com/list/ls123456789/)" />
@@ -75,9 +68,6 @@
       </div>
 
       <div id="lists" class="grid" aria-live="polite"></div>
-
-      <h3 style="margin:18px 0 8px">Universal Sorting <small style="font-weight:400;color:var(--muted)">(placeholder)</small></h3>
-      <div class="placeholder">Coming soon: set a universal default sort for all catalogs from this addon.</div>
 
       <div class="footer">
         <a id="install-stremio" class="btn" href="#" target="_self" rel="nofollow">Install to Stremio</a>
