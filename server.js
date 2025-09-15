@@ -14,6 +14,10 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+// Detect Netlify/serverless runtime
+const IS_NETLIFY = !!process.env.NETLIFY || !!process.env.AWS_LAMBDA_FUNCTION_NAME;
+
+
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
 
@@ -380,8 +384,8 @@ app.get('/manifest.json/configure', (req, res) => {
 });
 
 const uiDir = path.join(__dirname, 'public', 'ui');
-app.use('/ui', express.static(uiDir));
-app.use(express.static(uiDir));
+if (!IS_NETLIFY) app.use('/ui', express.static(uiDir));
+if (!IS_NETLIFY) app.use(express.static(uiDir));
 
 // --- uid helper via query or cookie (fallback to 'default')
 function parseCookies(req) {
@@ -407,7 +411,11 @@ app.get('/configure', (req, res) => {
   const uid = getUidFromReq(req);
   setUidCookie(res, uid);
   res.set('Cache-Control','no-store');
-  res.sendFile(path.join(uiDir, 'index.html'));
+  if (IS_NETLIFY) {
+    // On Netlify functions, serve static UI via Netlify and just redirect
+    return res.redirect(302, '/ui/index.html');
+  }
+  return res.sendFile(path.join(uiDir, 'index.html'));
 });
 app.get(['/model2.js','/ui/model2.js'], (req, res) => res.sendFile(path.join(uiDir, 'model2.js')));
 
@@ -819,8 +827,13 @@ app.delete('/api/user/:uid/lists/:lsid', (req, res) => {
 });
 
 // ---------------- Start ----------------
+// ---------------- Start ----------------
 const PORT = process.env.PORT || 7000;
-app.listen(PORT, () => {
-  console.log(`IMDbStream server running on http://localhost:${PORT}`);
-  console.log(`Configure at: http://localhost:${PORT}/configure?uid=default`);
-});
+if (!IS_NETLIFY) {
+  app.listen(PORT, () => {
+    console.log(`IMDbStream server running on http://localhost:${PORT}`);
+    console.log(`Configure at: http://localhost:${PORT}/configure?uid=default`);
+  });
+}
+
+export default app;
