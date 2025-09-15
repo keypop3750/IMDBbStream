@@ -1,0 +1,42 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+  command = ""
+
+[functions]
+  node_bundler = "esbuild"
+
+[[redirects]]
+  from = "/manifest.json"
+  to   = "/.netlify/functions/server/manifest.json"
+  status = 200
+
+[[redirects]]
+  from = "/catalog/*"
+  to   = "/.netlify/functions/server/catalog/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/meta/*"
+  to   = "/.netlify/functions/server/meta/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/*"
+  to   = "/.netlify/functions/server/api/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/install"
+  to   = "/.netlify/functions/server/install"
+  status = 200
+
+[[redirects]]
+  from = "/debug/install-url"
+  to   = "/.netlify/functions/server/debug/install-url"
+  status = 200
+
+[[redirects]]
+  from = "/configure"
+  to   = "/.netlify/functions/server/configure"
+  status = 200
